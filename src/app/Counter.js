@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Store from './Store';
+import { createStore } from './redux';
 import './style.css';
 
 const initialState = {
   count: 0
 };
 
-function updateState(state, action) {
+function reducer(state = initialState, action) {
   switch (action.type) {
     case 'INCREMENT':
       return { count: state.count + action.amount };
@@ -20,11 +20,11 @@ function updateState(state, action) {
   }
 }
 
-const store = new Store(updateState, initialState);
+const store = createStore(reducer, initialState);
 
-const actionIncrement = { type: 'INCREMENT', amount: 1 };
-const actionDecrement = { type: 'DECREMENT', amount: 1 };
-const actionReset = { type: 'RESET' };
+const actionIncrement = (amount) => ({ type: 'INCREMENT', amount });
+const actionDecrement = (amount) => ({ type: 'DECREMENT', amount });
+const actionReset = () => ({ type: 'RESET' })
 
 export default class Counter extends Component {
   constructor(props) {
@@ -32,15 +32,17 @@ export default class Counter extends Component {
   }
 
   increment = () => {
-    store.update(actionIncrement);
+    const amount = parseInt(this.inputAmout.value, 10);
+    store.dispatch(actionIncrement(amount));
   }
 
   decrement = () => {
-    store.update(actionDecrement);
+    const amount = parseInt(this.inputAmout.value, 10);
+    store.dispatch(actionDecrement(amount));
   }
 
   reset = () => {
-    store.update(actionReset);
+    store.dispatch(actionReset());
   }
 
   componentDidMount() {
@@ -50,7 +52,7 @@ export default class Counter extends Component {
 
 
   render() {
-    const { count } = store.state;
+    const { count } = store.getState();
     return (
       <div className="counter">
         <div className="count">{count}</div>
@@ -60,6 +62,9 @@ export default class Counter extends Component {
           <div className="btn" onClick={this.reset}>reset</div>
           <div className="btn" onClick={this.increment}>+</div>
         </div>
+
+        <input className="input-txt" type="text" ref={(amount) => this.inputAmout = amount } defaultValue="1"/>
+
       </div>
     );
   }

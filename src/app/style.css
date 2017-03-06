@@ -17,18 +17,35 @@ body {
     bottom: 0;
 }
 
-.count {
+.count,
+.input-txt {
     color: #ddba1d;
+}
+
+.count{
     font-size: 144px;
+}
+
+.buttons {
+    margin: 0 0 20px;
 }
 
 .btn {
     background: #ddba1d;
     display: inline-block;
+    cursor: pointer;
     font-size: 33px;
     height: 45px;
     line-height: 45px;
     margin: 0 3px;
     min-width: 45px;
     padding: 0 10px;
+}
+
+.input-txt {
+    background: transparent;
+    border: 0;
+    font-size: 50px;
+    text-align: center;
+    width: 100%;
 }
